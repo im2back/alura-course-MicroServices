@@ -1,6 +1,4 @@
-package br.com.alurafood.payments;
-
-
+package br.com.alurafood.payments.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,7 +35,7 @@ public class PaymentService {
 		return paymentReturn;
 	}
 	
-	  public PaymentDto atualizarPagamento(Long id, PaymentDto dto) {
+	  public PaymentDto updatePayment(Long id, PaymentDto dto) {
 		  Payment payment = new Payment(dto);
 	        payment.setId(id);
 	        payment = paymentRepository.save(payment);
@@ -45,7 +43,7 @@ public class PaymentService {
 			return paymentReturn;
 	    }
 	  
-	  public void excluirPagamento(Long id) {
+	  public void deletePayment(Long id) {
 	        paymentRepository.deleteById(id);
 	    }
 	
