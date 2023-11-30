@@ -4,6 +4,8 @@ package br.com.alurafood.payments.dto;
 
 import java.math.BigDecimal;
 
+import br.com.alurafood.payments.model.Payment;
+import br.com.alurafood.payments.model.Status;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -28,8 +30,8 @@ public record PaymentDto(
 		@NotBlank @Size(min =3,max = 3)
 		String code,
 
-		@NotBlank
-		String status,
+		
+		Status status,
 		
 		@NotNull
 		Long pedidoId,
@@ -39,5 +41,16 @@ public record PaymentDto(
 		
 		
 		) {
+	public PaymentDto(Payment payment){
+		   this(payment.getId(),
+				payment.getAmount(),
+				payment.getName(),
+				payment.getNumber(),
+				payment.getExpiration(),
+				payment.getCode(),
+				payment.getStatus(),
+				payment.getPedidoId(),
+				payment.getFormaDePagamentoId());	
+	}
 
 }

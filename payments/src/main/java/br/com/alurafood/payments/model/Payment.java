@@ -4,7 +4,7 @@ package br.com.alurafood.payments.model;
 
 import java.math.BigDecimal;
 
-
+import br.com.alurafood.payments.dto.PaymentDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -55,6 +55,19 @@ public class Payment {
 	
 	@NotNull @Column(name = "forma_de_pagamento_id")
 	private Long formaDePagamentoId; 
+	
+    public Payment(PaymentDto dto) {
+        // Inicialize os campos conforme necessário
+        this.id = dto.id();
+        this.amount = dto.amount();
+        this.name = dto.name();
+        this.number = dto.number();
+        this.expiration = dto.expiration();
+        this.code = dto.code();
+        this.status = dto.status();
+        this.pedidoId = dto.pedidoId();
+        this.formaDePagamentoId = dto.formaDePagamentoId();
+    }
 	
 
 	
