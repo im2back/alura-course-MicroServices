@@ -52,7 +52,7 @@ public class PaymentController {
 	
 	@Transactional
 	@PutMapping("/{id}")
-	public ResponseEntity<PaymentDto> updatePayment(@PathVariable  @Valid @RequestBody Long id,  PaymentDto dto, UriComponentsBuilder uriBuilder){
+	public ResponseEntity<PaymentDto> updatePayment(@PathVariable Long id, @Valid @RequestBody   PaymentDto dto, UriComponentsBuilder uriBuilder){
 		PaymentDto paymentUpdated = service.updatePayment(id,dto);
 				return ResponseEntity.ok(paymentUpdated);
 	}

@@ -36,11 +36,10 @@ public class PaymentService {
 	}
 	
 	  public PaymentDto updatePayment(Long id, PaymentDto dto) {
-		  Payment payment = new Payment(dto);
-	        payment.setId(id);
-	        payment = paymentRepository.save(payment);
-	        PaymentDto paymentReturn = new PaymentDto(payment);
-			return paymentReturn;
+		  	Payment payment = paymentRepository.findById(id).get();	  	
+		  	payment.update(payment, dto);	         
+	        payment = paymentRepository.save(payment);	            
+			return new PaymentDto(payment);
 	    }
 	  
 	  public void deletePayment(Long id) {

@@ -47,7 +47,7 @@ public class Payment {
 	@NotBlank @Size(min =3,max = 3) @Column(name = "code_column")
 	private String code;
 
-	@Enumerated(EnumType.STRING) @NotBlank @Column(name = "status_column")
+	@Enumerated(EnumType.STRING)  @Column(name = "status_column")
 	private Status status;
 	
 	@NotNull @Column(name = "pedido_id")
@@ -69,7 +69,15 @@ public class Payment {
         this.formaDePagamentoId = dto.formaDePagamentoId();
     }
 	
-
+	public void update (Payment payment, PaymentDto dto) {
+	    payment.setAmount(dto.amount());
+        payment.setName(dto.name());
+        payment.setNumber(dto.number());
+        payment.setExpiration(dto.expiration());
+        payment.setCode(dto.code());
+        payment.setPedidoId(dto.pedidoId());
+        payment.setFormaDePagamentoId(dto.formaDePagamentoId());
+}
 	
 	
 	
