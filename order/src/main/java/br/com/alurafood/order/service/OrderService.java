@@ -14,6 +14,7 @@ import br.com.alurafood.order.dto.OrderDto;
 import br.com.alurafood.order.model.Order;
 import br.com.alurafood.order.model.Status;
 import br.com.alurafood.order.repository.OrderRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class OrderService {
@@ -23,13 +24,13 @@ public class OrderService {
 
 	public List<OrderDto> findAll() {
 		List<OrderDto> dto = new ArrayList<>();
-	  repository.findAll().forEach(x ->{
-		 dto.add(new OrderDto(x));
-	  });;
+		repository.findAll().forEach(x -> {
+			dto.add(new OrderDto(x));
+		});
+		;
 
-	    return dto;
+		return dto;
 	}
-
 
 	public OrderDto findById(Long id) {
 		var order = repository.findById(id).get();
@@ -40,12 +41,13 @@ public class OrderService {
 		LocalDateTime dataHour = LocalDateTime.now();
 		Status status = Status.REALIZADO;
 		Order order = new Order(dataHour, status, dto);
-		order.getItens().forEach(x ->{
+
+		order.getItens().forEach(x -> {
 			x.setOrder(order);
 		});
-		
+
 		repository.save(order);
-		
+
 		return new OrderDto(order);
 	}
 
@@ -53,4 +55,28 @@ public class OrderService {
 		repository.deleteById(id);
 	}
 
+	public OrderDto updateStatus(Long id, Status status) {
+
+		Order order = repository.findByIdAddItens(id);
+		if (order == null) {
+			throw new EntityNotFoundException();
+		}
+		order.setStatus(status);
+		repository.updateStatus(status, order);
+
+		return new OrderDto(order);
+	}
+	
+	
+	 public void approvesPaymet(Long id) {
+
+	        Order order = repository.findByIdAddItens(id);
+
+	        if (order == null) {
+	            throw new EntityNotFoundException();
+	        }
+
+	        order.setStatus(Status.PAGO);
+	        repository.updateStatus(Status.PAGO, order);
+	    }
 }
