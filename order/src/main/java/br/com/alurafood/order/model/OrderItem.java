@@ -1,5 +1,7 @@
 package br.com.alurafood.order.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.alurafood.order.dto.OrderItemDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,6 +32,7 @@ public class OrderItem {
 	@Column(name= "column_description")
 	private String description;
 	
+	@JsonIgnore
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "order_id")
 	private Order order;
@@ -40,5 +43,10 @@ public class OrderItem {
 		this.order = order;	
 	}
 	
+	public OrderItem(OrderItemDto dto) {
+		this.quantity = dto.quantity();
+		this.description = dto.description();
+
+	}
 	
 }

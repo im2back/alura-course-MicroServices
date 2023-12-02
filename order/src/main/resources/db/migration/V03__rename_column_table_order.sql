@@ -1,0 +1,2 @@
+ALTER TABLE tb_order
+CHANGE COLUMN dateHour date_hour DATETIME NOT NULL;

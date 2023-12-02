@@ -5,49 +5,52 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import br.com.alurafood.order.dto.OrderDto;
-import br.com.alurafood.order.dto.OrderItemDto;
 import br.com.alurafood.order.model.Order;
-import br.com.alurafood.order.model.OrderItem;
 import br.com.alurafood.order.model.Status;
 import br.com.alurafood.order.repository.OrderRepository;
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class OrderService {
-	
+
 	@Autowired
 	private OrderRepository repository;
-	
-	public Page<Order> findAll(Pageable pageable){
-		return repository.findAll(pageable);
+
+	public List<OrderDto> findAll() {
+		List<OrderDto> dto = new ArrayList<>();
+	  repository.findAll().forEach(x ->{
+		 dto.add(new OrderDto(x));
+	  });;
+
+	    return dto;
 	}
-	
-	public Order findById(Long id) {
-		return repository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+
+
+	public OrderDto findById(Long id) {
+		var order = repository.findById(id).get();
+		return new OrderDto(order);
 	}
-	
-	public OrderDto createOrder(OrderDto dto) {
+
+	public OrderDto createOrder(OrderDto dto) throws JsonMappingException, JsonProcessingException {
 		LocalDateTime dataHour = LocalDateTime.now();
-		Status status = Status.REALIZADO;	
-		List<OrderItem> list = new ArrayList<>();
-		Order order = new Order(dataHour, status, list);
+		Status status = Status.REALIZADO;
+		Order order = new Order(dataHour, status, dto);
+		order.getItens().forEach(x ->{
+			x.setOrder(order);
+		});
 		
-		for(OrderItemDto x :dto.itens()) {		
-			var novo = new OrderItem(x, order);  
-			order.getItens().add(novo);
-		}
 		repository.save(order);
 		
-		return new OrderDto(order, dto.itens());
+		return new OrderDto(order);
 	}
-	
+
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
-	
+
 }
