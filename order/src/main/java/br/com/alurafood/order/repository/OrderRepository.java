@@ -6,11 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import br.com.alurafood.order.model.Order;
 import br.com.alurafood.order.model.Status;
-import jakarta.transaction.Transactional;
 
 public interface OrderRepository extends JpaRepository<Order, Long>{
 	
-	@Transactional
+	@org.springframework.transaction.annotation.Transactional
     @Modifying(clearAutomatically = true)
     @Query("update Order o set o.status = :status where o = :order")
     void updateStatus(Status status, Order order);

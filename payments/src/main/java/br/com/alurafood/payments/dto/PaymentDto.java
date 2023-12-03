@@ -4,11 +4,12 @@ package br.com.alurafood.payments.dto;
 
 import java.math.BigDecimal;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import br.com.alurafood.payments.model.Payment;
 import br.com.alurafood.payments.model.Status;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 public record PaymentDto(
 

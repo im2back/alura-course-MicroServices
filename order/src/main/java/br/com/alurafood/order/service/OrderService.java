@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,6 @@ import br.com.alurafood.order.dto.OrderDto;
 import br.com.alurafood.order.model.Order;
 import br.com.alurafood.order.model.Status;
 import br.com.alurafood.order.repository.OrderRepository;
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class OrderService {
@@ -59,7 +60,7 @@ public class OrderService {
 
 		Order order = repository.findByIdAddItens(id);
 		if (order == null) {
-			throw new EntityNotFoundException();
+			throw new RuntimeException();
 		}
 		order.setStatus(status);
 		repository.updateStatus(status, order);

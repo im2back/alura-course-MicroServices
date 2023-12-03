@@ -4,11 +4,15 @@ package br.com.alurafood.payments.controller;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,9 +25,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.alurafood.payments.dto.PaymentDto;
 import br.com.alurafood.payments.service.PaymentService;
-import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/payments")

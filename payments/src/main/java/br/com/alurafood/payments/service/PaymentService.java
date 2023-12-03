@@ -9,7 +9,7 @@ import br.com.alurafood.payments.dto.PaymentDto;
 import br.com.alurafood.payments.model.Payment;
 import br.com.alurafood.payments.model.Status;
 import br.com.alurafood.payments.repository.PaymentRepository;
-import jakarta.persistence.EntityNotFoundException;
+
 
 @Service
 public class PaymentService {
@@ -23,7 +23,7 @@ public class PaymentService {
 	
 	public PaymentDto findById(Long id) {
 		return paymentRepository.findById(id).map(PaymentDto::new).orElseThrow(
-				() -> new EntityNotFoundException());
+				() -> new RuntimeException());
 	}
 	
 	public PaymentDto createPayment(PaymentDto dto) {
