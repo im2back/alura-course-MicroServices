@@ -13,8 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -58,11 +58,10 @@ public class PaymentController {
 				return ResponseEntity.ok(paymentUpdated);
 	}
 	
-	@DeleteMapping("/{id}")
-	public 	ResponseEntity<PaymentDto> deletePayment(@PathVariable @NotNull Long id){
-		service.deletePayment(id);
-		return ResponseEntity.noContent().build();
-	}
+	@PatchMapping("/{id}/confirmar")
+    public void confirmPagamento(@PathVariable @NotNull Long id){
+        service.confirmPayment(id);
+    }
 	
 	
 }

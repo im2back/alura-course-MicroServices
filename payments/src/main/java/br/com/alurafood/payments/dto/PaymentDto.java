@@ -13,7 +13,7 @@ import br.com.alurafood.payments.model.Status;
 
 public record PaymentDto(
 
-		@NotNull
+		
 		Long id,
 		
 		@NotNull
