@@ -13,7 +13,6 @@ import br.com.alurafood.payments.model.Payment;
 import br.com.alurafood.payments.model.Status;
 import br.com.alurafood.payments.repository.PaymentRepository;
 
-
 @Service
 public class PaymentService {
 
@@ -21,43 +20,53 @@ public class PaymentService {
 	private PaymentRepository repository;
 	@Autowired
 	private OrderClient order;
-	
-	public Page<PaymentDto> findAll(Pageable pageable){
+
+	public Page<PaymentDto> findAll(Pageable pageable) {
 		return repository.findAll(pageable).map(PaymentDto::new);
 	}
-	
+
 	public PaymentDto findById(Long id) {
-		return repository.findById(id).map(PaymentDto::new).orElseThrow(
-				() -> new RuntimeException());
+		return repository.findById(id).map(PaymentDto::new).orElseThrow(() -> new RuntimeException());
 	}
-	
+
 	public PaymentDto createPayment(PaymentDto dto) {
 		Payment payment = new Payment(dto);
 		payment.setStatus(Status.CRIADO);
 		repository.save(payment);
-		
+
 		PaymentDto paymentReturn = new PaymentDto(payment);
 		return paymentReturn;
 	}
-	
-	  public PaymentDto updatePayment(Long id, PaymentDto dto) {
-		  	Payment payment = repository.findById(id).get();	  	
-		  	payment.update(payment, dto);	         
-	        payment = repository.save(payment);	            
-			return new PaymentDto(payment);
-	    }
-	  
-	   public void confirmPayment(Long id){
-	        Optional<Payment> payment = repository.findById(id);
 
-	        if (!payment.isPresent()) {
-	            throw new RuntimeException();
-	        }
+	public PaymentDto updatePayment(Long id, PaymentDto dto) {
+		Payment payment = repository.findById(id).get();
+		payment.update(payment, dto);
+		payment = repository.save(payment);
+		return new PaymentDto(payment);
+	}
 
-	        payment.get().setStatus(Status.CONFIRMADO);
-	        repository.save(payment.get());
-	        order.updatePayment(payment.get().getPedidoId());
-	    }
-	
-	
+	public void confirmPayment(Long id) {
+		Optional<Payment> payment = repository.findById(id);
+
+		if (!payment.isPresent()) {
+			throw new RuntimeException();
+		}
+
+		payment.get().setStatus(Status.CONFIRMADO);
+		repository.save(payment.get());
+		order.updatePayment(payment.get().getPedidoId());
+	}
+
+	public void alteraStatus(Long id) {
+		Optional<Payment> payment = repository.findById(id);
+
+		if (!payment.isPresent()) {
+			throw new RuntimeException();
+		}
+
+		payment.get().setStatus(Status.CONFIRMADO_SEM_INTEGRAÇÃO);
+		repository.save(payment.get());
+
+	}
+
 }
