@@ -7,6 +7,7 @@ import java.net.URI;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,8 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 @RestController
 @RequestMapping("/payments")
 public class PaymentController {
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
 	
 	@Autowired
 	private PaymentService service;
@@ -48,7 +51,12 @@ public class PaymentController {
 	@PostMapping
 	public ResponseEntity<PaymentDto> createPayment(@Valid @RequestBody PaymentDto dto, UriComponentsBuilder uriBuilder){
 		PaymentDto paymentDtoReturn = service.createPayment(dto);
-			URI uri = uriBuilder.path("/payments/{id}").buildAndExpand(paymentDtoReturn.id()).toUri();
+			URI uri = uriBuilder.path("/payments/{id}").buildAndExpand(paymentDtoReturn.id()).toUri();	
+			
+			
+			
+			
+			 rabbitTemplate.convertAndSend("pagamento.concluido",paymentDtoReturn);
 				return ResponseEntity.created(uri).body(paymentDtoReturn);
 	}
 	
