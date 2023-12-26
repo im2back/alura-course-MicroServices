@@ -11,9 +11,9 @@ public class PaymentListener {
 	@RabbitListener(queues = "pagamentos.detalhes-pedido")
 	public void receberMenssagem(PaymentDto dto) {
 		
-		if(dto.id()>1) {
+	/*	if(dto.id()>1) {
 			throw new RuntimeException("Falhou");
-		}
+		}*/
 		
 		System.out.println("======>  Pagamento <=======");
 		System.out.println("Dados do pagamento:");
